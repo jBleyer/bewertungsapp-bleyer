@@ -25,8 +25,8 @@ Eigene `config/config.json` lokal aus `config/config.example.json` ableiten, nic
 
 ## Einheit 1: Installation
 
-- [ ] Screenshot Toolchain (`node --version`, `ionic --version`, laufendes DB-Tool bzw. Docker-Container)
-- [ ] Antworten auf die vier Verständnisfragen: `docs/screenshots/einheit1-fragen.md`
+- [x] Screenshot Toolchain (`node --version`, `ionic --version`, laufendes DB-Tool bzw. Docker-Container)
+- [x] Antworten auf die vier Verständnisfragen: `docs/screenshots/einheit1-fragen.md`
 
 ## Einheit 2: Datenmodell anlegen
 
