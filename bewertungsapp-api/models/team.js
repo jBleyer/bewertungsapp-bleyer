@@ -1,7 +1,9 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+
+//here the api requests (get, delete, etc). use sequelizer
+
+const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Team extends Model {
     /**
@@ -11,14 +13,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Team.hasMany(models.Member, { foreignKey: "teamId" });
+      Team.hasMany(models.Project, { foreignKey: "teamId" });
     }
   }
-  Team.init({
-    name: DataTypes.STRING,
-    klasse: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Team',
-  });
+  Team.init(
+    {
+      name: DataTypes.STRING,
+      klasse: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: "Team",
+    },
+  );
   return Team;
 };
