@@ -16,12 +16,6 @@ module.exports = (sequelize, DataTypes) => {
   }
   Project.init(
     {
-      //Optionale Validierung
-      score: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        validate: { min: 0 },
-      },
       teamId: DataTypes.INTEGER,
       titel: DataTypes.STRING,
       beschreibung: DataTypes.STRING,

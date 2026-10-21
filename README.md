@@ -5,6 +5,7 @@ Klasse: 4aAPC
 ## Setup
 
 Backend:
+
 ```
 cd backend
 npm install
@@ -15,6 +16,7 @@ npm start
 ```
 
 Frontend:
+
 ```
 cd frontend
 npm install
@@ -30,22 +32,22 @@ Eigene `config/config.json` lokal aus `config/config.example.json` ableiten, nic
 
 ## Einheit 2: Datenmodell anlegen
 
-- [ ] Ausgefüllte Planungsvorlage: `docs/diagramm/planungsvorlage.html`
-- [ ] Verwendete `model:generate`-Befehle dokumentiert
-- [ ] Screenshot der angelegten Tabellen im DB-Tool: `docs/screenshots/`
+- [x] Ausgefüllte Planungsvorlage: `docs/diagramm/planungsvorlage.html`
+- [x] Verwendete `model:generate`-Befehle dokumentiert
+- [x] Screenshot der angelegten Tabellen im DB-Tool: `docs/screenshots/`
 
 ## Einheit 3: Assoziationen und weitere Modelle
 
-- [ ] Alle Modelle (Team, Member, Project, Criterion, Juror, Evaluation) mit ausgefüllten `associate`-Methoden
-- [ ] Unique-Constraint auf (projectId, criterionId, jurorId) bei Evaluation
-- [ ] Mindestens ein Seeder mit Testdaten
+- [x] Alle Modelle (Team, Member, Project, Criterion, Juror, Evaluation) mit ausgefüllten `associate`-Methoden
+- [x] Unique-Constraint auf (projectId, criterionId, jurorId) bei Evaluation
+- [x] Mindestens ein Seeder mit Testdaten
 
 ## Einheit 4: Backend-Routen
 
-- [ ] CRUD für Team und Project
-- [ ] POST-Route für Evaluation inkl. Validierung
-- [ ] Aggregations-Route: Durchschnitt der Punktzahl pro Projekt und Kriterium
-- [ ] Kurze Endpunkt-Dokumentation (Methode, Pfad, Body, Rückgabe) unten in diesem README oder in `docs/`
+- [x] CRUD für Team und Project
+- [x] POST-Route für Evaluation inkl. Validierung
+- [x] Aggregations-Route: Durchschnitt der Punktzahl pro Projekt und Kriterium
+- [x] Kurze Endpunkt-Dokumentation (Methode, Pfad, Body, Rückgabe) unten in diesem README oder in `docs/`
 
 ## Einheit 5: Postman-Test
 
@@ -70,8 +72,19 @@ Eigene `config/config.json` lokal aus `config/config.example.json` ableiten, nic
 ## Endpunkt-Dokumentation (laufend ergänzen)
 
 | Methode | Pfad | Body | Rückgabe |
-|---|---|---|---|
 | GET | /teams | – | Liste aller Teams |
+| GET | /teams | – | Liste aller Teams |
+| GET | /teams/:id | – | Team inkl. Members und Projects, 404 wenn nicht gefunden |
+| POST| /teams | { name, klasse } | Neues Team (201), 400 bei fehlenden Feldern |
+| PUT | /teams/:id | { name?, klasse? } | Geändertes Team, 404 wenn nicht gefunde |
+| DELETE | /teams/:id | – | Kein Inhalt (204), 404 wenn nicht gefunden, 409 bei verknüpften Datensätzen |
+| GET | /projects | – | Liste aller Projekte inkl. Team |
+| GET | /projects/:id | – | Projekt inkl. Team, 404 wenn nicht gefunden |
+| POST | /projects | { teamId, titel, praesentiertAm, beschreibung? } | Neues Projekt (201), 400 bei fehlenden Feldern, 404 wenn Team nicht existiert |
+| PUT | /projects/:id | { teamId?, titel?, beschreibung?, praesentiertAm? } | Geändertes Projekt, 404 wenn Projekt oder Team nicht existiert |
+| DELETE | /projects/:id | – | Kein Inhalt (204), 404 wenn nicht gefunden, 409 bei vorhandenen Bewertungen |
+| POST | /evaluations | { projectId, criterionId, jurorId, score, comment? } | Neue Bewertung (201), 400 bei fehlenden Feldern oder ungültigem score, 404 wenn Projekt, Kriterium oder Juror nicht existiert, 409 bei doppelter Bewertung |
+| GET | /evaluations/project/:projectId/durchschnitt | – | Durchschnittliche Punktzahl pro Kriterium (criterionId, kriterium, maxScore, durchschnitt, anzahlBewertungen), 404 wenn Projekt nicht existiert |
 
 ## Bekannte Einschränkungen
 

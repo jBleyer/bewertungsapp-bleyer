@@ -1,0 +1,532 @@
+{
+  "info": {
+    "_postman_id": "78a2ac6b-30c5-42c5-b522-a46fb98e510a",
+    "name": "Bewertungsapp",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33840528"
+  },
+  "item": [
+    {
+      "name": "Post teams",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status ist 201\", () => pm.response.to.have.status(201));",
+              "",
+              "pm.test(\"Antwort enthält id, name und klasse\", () => {",
+              "  const json = pm.response.json();",
+              "  pm.expect(json).to.have.property('id');",
+              "  pm.expect(json.name).to.eql(\"Team Blockchain\");",
+              "  pm.expect(json.klasse).to.eql(\"4AHITL\");",
+              "});",
+              "",
+              "if (pm.response.code === 201) {",
+              "  pm.environment.set(\"teamId\", pm.response.json().id);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Team Blockchain\",\"klasse\":\"4AHITL\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/teams",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "teams"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get teams",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/teams",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "teams"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get teams w. Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/teams/{{teamId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "teams",
+            "{{teamId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Put team w. Id",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"klasse\":\"5AHITL\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/teams/{{teamId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "teams",
+            "{{teamId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post projects",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"teamId\": 1,\r\n  \"titel\": \"Dezentrale Wahl-App\",\r\n  \"beschreibung\": \"Abstimmungssystem auf Basis einer Blockchain\",\r\n  \"praesentiertAm\": \"2026-06-12\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/projects",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "projects"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get projects",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/projects",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "projects"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get projects w. Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/projects/{{projectId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "projects",
+            "{{projectId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Put projects w. Id",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"titel\":\"Dezentrale Wahl-App v2\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/projects/{{projectId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "projects",
+            "{{projectId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post eval.",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status ist 400 bei zu hohem score\", () => {\n  pm.response.to.have.status(400);\n});\n\npm.test(\"Fehlermeldung nennt den erlaubten Bereich\", () => {\n  pm.expect(pm.response.json().error).to.include(\"zwischen 0 und\");\n});\n\npm.test(\"Status ist 409 bei doppelter Bewertung\", () => {\n  pm.response.to.have.status(409);\n});\n\npm.test(\"Antwort enthält eine Fehlermeldung\", () => {\n  pm.expect(pm.response.json()).to.have.property('error');\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"projectId\":{{projectId}},\"criterionId\":{{criterionId}},\"jurorId\":{{jurorId}},\"score\":8,\"comment\":\"Konzept klar erklärt\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/evaluations",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "evaluations"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post eval. aber anders",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status ist 400 bei zu hohem score\", () => {\n  pm.response.to.have.status(400);\n});\n\npm.test(\"Fehlermeldung nennt den erlaubten Bereich\", () => {\n  pm.expect(pm.response.json().error).to.include(\"zwischen 0 und\");\n});\n\npm.test(\"Status ist 409 bei doppelter Bewertung\", () => {\n  pm.response.to.have.status(409);\n});\n\npm.test(\"Antwort enthält eine Fehlermeldung\", () => {\n  pm.expect(pm.response.json()).to.have.property('error');\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"projectId\":{{projectId}},\"criterionId\":{{criterionId}},\"jurorId\":{{jurorId2}},\"score\":10,\"comment\":\"Konzept klar erklärt\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/evaluations",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "evaluations"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET eval. proj. durchschnitt",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status ist 200\", () => pm.response.to.have.status(200));\n\npm.test(\"Antwort ist ein Array mit dem erwarteten Aufbau\", () => {\n  const json = pm.response.json();\n  pm.expect(json).to.be.an('array').with.lengthOf(1);\n  pm.expect(json[0]).to.have.all.keys(\n    'criterionId', 'kriterium', 'maxScore', 'durchschnitt', 'anzahlBewertungen'\n  );\n});\n\npm.test(\"Durchschnitt aus 8 und 10 ist 9\", () => {\n  const eintrag = pm.response.json()[0];\n  pm.expect(eintrag.durchschnitt).to.eql(9);\n  pm.expect(eintrag.anzahlBewertungen).to.eql(2);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/evaluations/project/{{projectId}}/durchschnitt",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "evaluations",
+            "project",
+            "{{projectId}}",
+            "durchschnitt"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Post wie 5, aber titel change(Wegwerf-Projekt)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/projects(Wegwerf-Projekt)",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "projects(Wegwerf-Projekt)"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete tmpProjectId",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/projects/{{tmpProjectId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "projects",
+            "{{tmpProjectId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get tmpProjectId",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/projects/{{tmpProjectId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "projects",
+            "{{tmpProjectId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "N1",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Team ohne Klasse\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/teams",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "teams"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "N2",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"projectId\":{{projectId}},\"criterionId\":{{criterionId}},\"jurorId\":{{jurorId}},\"score\":11,\"comment\":\"Konzept klar erklärt\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/evaluations",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "evaluations"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "N3",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"projectId\":{{projectId}},\"criterionId\":{{criterionId}},\"jurorId\":{{jurorId}},\"score\":8,\"comment\":\"Konzept klar erklärt\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/evaluations",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "evaluations"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "N4",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"projectId\":999999,\"criterionId\":{{criterionId}},\"jurorId\":{{jurorId}},\"score\":8,\"comment\":\"Konzept klar erklärt\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/evaluations",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "evaluations"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "N5",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/projects/{{projectId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "projects",
+            "{{projectId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "N6",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/projects/abc",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "projects",
+            "abc"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": []
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.test(\"Antwortzeit unter 1000 ms\", () => {",
+          "  pm.expect(pm.response.responseTime).to.be.below(1000);",
+          "});",
+          "",
+          "if (pm.response.code !== 204) {",
+          "  pm.test(\"Antwort ist JSON\", () => {",
+          "    pm.response.to.be.json;",
+          "  });",
+          "}"
+        ]
+      }
+    }
+  ]
+}

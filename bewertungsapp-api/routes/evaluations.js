@@ -2,6 +2,17 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models");
 const { Evaluation, Project, Criterion, Juror } = db;
+const { fn, col } = require("sequelize");
+
+//Für die Id die Parameter
+router.param("projectId", (req, res, next, projectId) => {
+  if (!/^\d+$/.test(projectId)) {
+    return res
+      .status(400)
+      .json({ error: "projectId muss eine positive ganze Zahl sein" });
+  }
+  next();
+});
 
 // Bewertung abgeben
 router.post("/", async (req, res) => {

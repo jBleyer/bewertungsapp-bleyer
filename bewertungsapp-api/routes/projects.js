@@ -4,6 +4,16 @@ const db = require("../models");
 const { fn, col } = require("sequelize");
 const { Project, Team, Evaluation, Criterion } = db;
 
+//Für 400 Fehler
+router.param("id", (req, res, next, id) => {
+  if (!/^\d+$/.test(id)) {
+    return res
+      .status(400)
+      .json({ error: "id muss eine positive ganze Zahl sein" });
+  }
+  next();
+});
+
 // alle Projekte inkl. Team
 router.get("/", async (req, res) => {
   const projects = await Project.findAll({ include: Team });

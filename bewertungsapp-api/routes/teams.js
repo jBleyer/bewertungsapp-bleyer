@@ -2,6 +2,16 @@ const express = require("express");
 const router = express.Router();
 const { Team, Member, Project } = require("../models");
 
+//für 400 Fehler
+router.param("id", (req, res, next, id) => {
+  if (!/^\d+$/.test(id)) {
+    return res
+      .status(400)
+      .json({ error: "id muss eine positive ganze Zahl sein" });
+  }
+  next();
+});
+
 // alle Teams
 router.get("/", async (req, res) => {
   const teams = await Team.findAll();
